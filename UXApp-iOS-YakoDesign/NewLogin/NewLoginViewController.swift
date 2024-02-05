@@ -9,13 +9,6 @@ import UIKit
 
 class NewLoginViewController: UIViewController{
     
-    
-    @IBOutlet weak var contentLoginView: UIView!{
-        didSet{
-            contentLoginView.backgroundColor = UIColor.white
-            contentLoginView.layer.cornerRadius = 5
-        }
-    }
     @IBOutlet weak var bienvenidoLabel: UILabel!{
         didSet{
             bienvenidoLabel.font = UIFont(name: "Roboto-Regular", size: 16)
@@ -29,11 +22,15 @@ class NewLoginViewController: UIViewController{
         }
     }
     @IBOutlet weak var userTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var showPasswordButton: UIButton!
+    @IBOutlet weak var passwordTextField: UITextField!{
+        didSet{
+            setupPasswordTextFieldLeftView()
+            passwordTextField.isSecureTextEntry = true
+        }
+    }
     @IBOutlet weak var forgetPasswordLabel: UILabel!{
         didSet{
-            forgetPasswordLabel.font = UIFont(name: "Roboto-Normal", size: 12)
+            forgetPasswordLabel.font = UIFont(name: "Roboto-Normal", size: 10)
             forgetPasswordLabel.textColor = UIColor.textCol
         }
     }
@@ -73,6 +70,26 @@ class NewLoginViewController: UIViewController{
     @IBAction func loginGoogleButtonPressed(_ sender: Any) {
         switchToHomeViewController()
         print("rootViewController")
+    }
+    
+    func setupPasswordTextFieldLeftView() {
+        
+        let rightView = UIView(frame: CGRect(x: 0, y: 0, width: 34, height: 34))
+        
+        let button = UIButton(type: .custom)
+        button.frame = CGRect(x: -5, y: 2, width: 30, height: 30)
+        button.setImage(UIImage(named: "icoProfile_Default"), for: .normal)
+        button.addTarget(self, action: #selector(showPasswordButtonPressed(_:)), for: .touchUpInside)
+        
+        rightView.addSubview(button)
+        
+        passwordTextField.rightViewMode = .always
+        
+        passwordTextField.rightView = rightView
+    }
+    
+    @objc func showPasswordButtonPressed(_ sender: Any) {
+        passwordTextField.isSecureTextEntry.toggle()
     }
     
     private func presentHomeViewController() {
